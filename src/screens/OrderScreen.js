@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput } 
 import { Picker } from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import backgroundImage from '../../assets/Order.jpg';
-import { OrderContext } from '../../context/OrderContext'; // <-- importamos el contexto
+import { OrderContext } from '../../context/OrderContext'; 
 
 const OrderScreen = ({ route, navigation }) => {
     const pizzas = route.params?.pizzas || [];
-    const { addOrder } = useContext(OrderContext); // <-- usamos addOrder del contexto
+    const { addOrder } = useContext(OrderContext); 
 
     const [selectedPizza, setSelectedPizza] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
@@ -40,7 +40,7 @@ const OrderScreen = ({ route, navigation }) => {
             total: price
         };
 
-        addOrder(order); // <-- agregamos la orden al contexto
+        addOrder(order); 
 
         console.log("Orden guardada:", order);
         alert(`Orden guardada correctamente:\n${amount} ${selectedPizza} (${selectedSize}) - Total: ${price}`);
@@ -105,7 +105,7 @@ const OrderScreen = ({ route, navigation }) => {
                         <Text style={styles.buttonText}>ORDENAR</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.exitButton} onPress={() => navigation.replace('Customer')}>
+                    <TouchableOpacity style={styles.exitButton} onPress={() => navigation.replace('Login')}>
                         <Text style={styles.buttonText}>EXIT</Text>
                     </TouchableOpacity>
                 </View>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, TextInput, StyleSheet, Alert, ImageBackground, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, StyleSheet, Alert, ImageBackground, Image, TouchableOpacity,  BackHandler} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import backgroundImage from '../../assets/fondo.jpg';
 import logoImage from '../../assets/logoPP.jpg';
@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const users = [
-    { id: 1, username: 'admin', password: '1234' },
+    { id: 1, username: 'Admin', password: '1234' },
     { id: 2, username: 'Juan', password: '2121' },
     { id: 3, username: 'Jair', password: '2026' },
   ];
@@ -27,8 +27,24 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleExit = () => {
-    Alert.alert('Salir', 'Has salido de la aplicación');
+
+    Alert.alert(
+      "Salir",
+      "¿Deseas cerrar la aplicación?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Salir",
+          onPress: () => BackHandler.exitApp()
+        }
+      ]
+    );
+
   };
+
 
   return (
     <LinearGradient colors={['#0A0F24', '#1C2E4A']} style={styles.container}>
