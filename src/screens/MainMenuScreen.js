@@ -14,7 +14,7 @@ const MainMenuScreen = ({ navigation }) => {
           <Image source={logoImage} style={styles.logo} />
           <TouchableOpacity
             style={styles.button}
-            onPress={() => alert('Función pendiente')}>
+            onPress={() => navigation.navigate('Employed')}>
             <Text style={styles.buttonText}>EMPLOYED</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -24,7 +24,7 @@ const MainMenuScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => alert('Función pendiente')}>
+            onPress={() => navigation.navigate('UsScreen')}>
             <Text style={styles.buttonText}>US</Text>
           </TouchableOpacity>
           <TouchableOpacity

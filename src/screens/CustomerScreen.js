@@ -18,7 +18,7 @@ const CustomerScreen = ({ navigation }) => {
                 <View style={styles.content}>
                     <Text style={styles.title}>CUSTOMER</Text>
                     <Image source={logoImage} style={styles.logo} />
-                    <TouchableOpacity style={styles.button}  onPress={() => alert('Menú de pizzas pendiente')}>
+                    <TouchableOpacity style={styles.button}  onPress={() => navigation.navigate('Menu')}>
                         <Text style={styles.buttonText}>MENU</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order', { pizzas })}>

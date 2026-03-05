@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import backgroundImage from '../../assets/Order.jpg';
+import { OrderContext } from '../../context/OrderContext'; // <-- importamos el contexto
 
 const OrderScreen = ({ route, navigation }) => {
     const pizzas = route.params?.pizzas || [];
+    const { addOrder } = useContext(OrderContext); // <-- usamos addOrder del contexto
 
     const [selectedPizza, setSelectedPizza] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
@@ -15,7 +17,7 @@ const OrderScreen = ({ route, navigation }) => {
     const updatePrice = (pizzaName, size, qty) => {
         const pizza = pizzas.find(p => p.name === pizzaName);
         if (pizza && size && qty) {
-            const unitPrice = size === 'small'
+            const unitPrice = size === 'Chica'
                 ? parseInt(pizza.smallPrice.replace('$', ''))
                 : parseInt(pizza.largePrice.replace('$', ''));
             const quantity = parseInt(qty) || 0;
@@ -30,14 +32,24 @@ const OrderScreen = ({ route, navigation }) => {
             alert('Por favor completa todos los campos');
             return;
         }
+
         const order = {
             pizza: selectedPizza,
             size: selectedSize,
             amount,
             total: price
         };
+
+        addOrder(order); // <-- agregamos la orden al contexto
+
         console.log("Orden guardada:", order);
         alert(`Orden guardada correctamente:\n${amount} ${selectedPizza} (${selectedSize}) - Total: ${price}`);
+
+        // resetear los campos
+        setSelectedPizza('');
+        setSelectedSize('');
+        setAmount('');
+        setPrice('$0');
     };
 
     return (
@@ -45,6 +57,7 @@ const OrderScreen = ({ route, navigation }) => {
             <ImageBackground source={backgroundImage} style={styles.background}>
                 <View style={styles.content}>
                     <Text style={styles.title}>ORDER</Text>
+
                     <Text style={styles.label}>TYPE:</Text>
                     <Picker
                         selectedValue={selectedPizza}
@@ -52,12 +65,14 @@ const OrderScreen = ({ route, navigation }) => {
                             setSelectedPizza(value);
                             updatePrice(value, selectedSize, amount);
                         }}
-                        style={styles.picker} >
+                        style={styles.picker}
+                    >
                         <Picker.Item label="Selecciona tu pizza" value="" />
                         {pizzas.map((pizza, index) => (
                             <Picker.Item key={index} label={pizza.name} value={pizza.name} />
                         ))}
                     </Picker>
+
                     <Text style={styles.label}>SIZE:</Text>
                     <Picker
                         selectedValue={selectedSize}
@@ -65,11 +80,13 @@ const OrderScreen = ({ route, navigation }) => {
                             setSelectedSize(value);
                             updatePrice(selectedPizza, value, amount);
                         }}
-                        style={styles.picker}>
+                        style={styles.picker}
+                    >
                         <Picker.Item label="Selecciona tu tamaño" value="" />
                         <Picker.Item label="Chica" value="Chica" />
                         <Picker.Item label="Grande" value="Grande" />
                     </Picker>
+
                     <Text style={styles.label}>AMOUNT:</Text>
                     <TextInput
                         style={styles.amountInput}
@@ -79,11 +96,15 @@ const OrderScreen = ({ route, navigation }) => {
                         onChangeText={(text) => {
                             setAmount(text);
                             updatePrice(selectedPizza, selectedSize, text);
-                        }}/>
+                        }}
+                    />
+
                     <Text style={styles.priceText}>TOTAL: {price}</Text>
+
                     <TouchableOpacity style={styles.button} onPress={placeOrder}>
                         <Text style={styles.buttonText}>ORDENAR</Text>
                     </TouchableOpacity>
+
                     <TouchableOpacity style={styles.exitButton} onPress={() => navigation.replace('Customer')}>
                         <Text style={styles.buttonText}>EXIT</Text>
                     </TouchableOpacity>
@@ -162,7 +183,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 50,
   },
 
   buttonText: {
